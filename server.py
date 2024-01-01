@@ -23,13 +23,33 @@ def answer_question():
     data = request.get_json()
     doc_name = data['doc_name']
     question = data['question']
-    document_text = " ".join(df.loc[df['doc_name'] == doc_name, 'text'].astype(str).tolist())  # Concatenate the text as a string
+    print("Doc Name: "+doc_name)
+    print("Question: "+question)
+
+    # Filter the text data based on the document name
+    relevant_text_segments = df[df['doc_name'] == doc_name]['text'].astype(str).tolist()
+
+    # Concatenate all text segments into a single string
+    document_text = " ".join(relevant_text_segments)
+
+    # Remove punctuation
     document_text = document_text.translate(str.maketrans('', '', string.punctuation))
-    print("Doc Name:", doc_name)
-    print("Question:", question)
-    print("Document Text:", document_text)
-    result = qa_pipeline(question=question, context=document_text)
-    return jsonify({'answer': result['answer']})
+
+    # Limit the total input to 2000 tokens
+    document_text = " ".join(document_text.split()[:2000])
+
+    # Split the limited document_text into segments of approximately 500 tokens each
+    token_limit = 500
+    segmented_text = [document_text[i:i+token_limit] for i in range(0, len(document_text), token_limit)]
+
+    # Process each segment and collect the answers
+    answers = []
+    for segment in segmented_text:
+        result = qa_pipeline(question=question, context=segment)
+        answers.append(result['answer'])
+
+    # Return the aggregated answers
+    return jsonify({'answers': answers})
 
 # API endpoint to get unique doc_names
 @app.route('/unique_doc_names', methods=['GET'])

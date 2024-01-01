@@ -3,5 +3,5 @@ Content-Type: application/json
 
 {
     "doc_name" : "dairy-farm_ar2020pdf",
-    "question": "Explain Everything keep it short!"
+    "question": "Tell me the name of the Business?"
 }
