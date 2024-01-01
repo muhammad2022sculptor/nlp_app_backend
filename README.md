@@ -1,6 +1,19 @@
 # nlp_app_backend
 
-##better to install these first
+main steps and motivation for any data engineering/processing on the raw data
+before making it available to the API;
+The data needs to be clean and readable to API.
+
+the main functionalities of the API;
+The api extracts the data from text_segments.csv which is already an extracted data for three different companies. and the api also recieves questions about them and answers them accordingly.
+
+the key challenges you faced in solving the problem;
+The most difficult challenge was that there was a limit to word for processing.
+
+how would you improve the backend, if you had more time to work on it?
+Add more functionality and increase accuracy, speed.
+
+# better to install these first
 1. pandas
 2. flask
 3. flask_cors
